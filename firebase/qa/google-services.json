@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1092085305525",
+    "project_id": "rhk-properties-qa",
+    "storage_bucket": "rhk-properties-qa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092085305525:android:90eb3d1a025132f8f6eefc",
+        "android_client_info": {
+          "package_name": "com.rhkproperties.mobile.qa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOi8D3s5EXfjha8_w9Lq2K4GKuPCn2fa0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

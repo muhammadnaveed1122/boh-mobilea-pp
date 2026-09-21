@@ -1,0 +1,66 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env
+.env.local
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# generated native folders
+/ios
+/android
+
+# local expo modules — gradle build output (sources in modules/*/android/src ARE tracked)
+modules/*/android/build/
+
+# husky internal (auto-generated)
+.husky/_
+
+/RHK Mobile App Wireframing - Faizan
+# Superpowers brainstorm/visual-companion scratch
+.superpowers/
+.secrets/
+
+# Claude Code local scratch (worktrees, settings)
+.claude/
+
+# Local build output (eas build --local)
+build/
+*.ipa
+*.apk
+*.aab
+
+# IDE metadata (Android Studio / IntelliJ)
+.idea/

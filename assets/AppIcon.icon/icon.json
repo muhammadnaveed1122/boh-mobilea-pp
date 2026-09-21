@@ -1,0 +1,120 @@
+{
+  "color-space-for-untagged-svg-colors": "display-p3",
+  "fill-specializations": [
+    {
+      "value": {
+        "automatic-gradient": "srgb:0.97288,0.96948,0.94560,1.00000"
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": {
+        "automatic-gradient": "srgb:0.05483,0.09276,0.16770,1.00000"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "blur-material": null,
+      "hidden": false,
+      "layers": [
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "automatic-gradient": "srgb:0.97288,0.96948,0.94560,1.00000"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "automatic-gradient": "srgb:0.97288,0.96948,0.94560,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "Box.svg",
+          "name": "Box",
+          "position": {
+            "scale": 2,
+            "translation-in-points": [-0.2849999999999113, 0.775202805787444]
+          }
+        },
+        {
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "automatic-gradient": "srgb:0.97288,0.96948,0.94560,1.00000"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "automatic-gradient": "srgb:0.97288,0.96948,0.94560,1.00000"
+              }
+            }
+          ],
+          "glass": true,
+          "image-name": "Prop.svg",
+          "name": "Prop",
+          "position": {
+            "scale": 2,
+            "translation-in-points": [0, 0]
+          }
+        },
+        {
+          "blend-mode-specializations": [
+            {
+              "appearance": "dark",
+              "value": "normal"
+            }
+          ],
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "automatic-gradient": "srgb:0.97288,0.96948,0.94560,1.00000"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "automatic-gradient": "srgb:0.97288,0.96948,0.94560,1.00000"
+              }
+            }
+          ],
+          "image-name": "RHK-01 2.svg",
+          "name": "RHK-01 2",
+          "position": {
+            "scale": 2,
+            "translation-in-points": [-1.1368683772161603e-13, 0]
+          }
+        },
+        {
+          "hidden": true,
+          "image-name": "Logo-01 3.svg",
+          "name": "Logo-01 3",
+          "position": {
+            "scale": 2,
+            "translation-in-points": [0, 0]
+          }
+        }
+      ],
+      "lighting": "individual",
+      "shadow": {
+        "kind": "layer-color",
+        "opacity": 0.8
+      },
+      "translucency": {
+        "enabled": false,
+        "value": 0.5
+      }
+    }
+  ],
+  "supported-platforms": {
+    "circles": ["watchOS"],
+    "squares": "shared"
+  }
+}

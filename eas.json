@@ -1,0 +1,73 @@
+{
+  "cli": {
+    "version": ">= 13.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "node": "24.15.0",
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "APP_ENV": "qa",
+        "EXPO_PUBLIC_API_BASE_URL": "https://api-qa.rhkproperties.com",
+        "EXPO_PUBLIC_SOCKET_URL": "https://api-qa.rhkproperties.com",
+        "EXPO_PUBLIC_WEB_BASE_URL": "https://qa.rhkproperties.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "767292126416-93nm8n5vkqlopem4qa855p816ut1g33a.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "767292126416-1c8kfjlmiagq4c2ndscr6rlsbdn2kdts.apps.googleusercontent.com"
+      }
+    },
+    "preview": {
+      "node": "24.15.0",
+      "distribution": "internal",
+      "env": {
+        "APP_ENV": "qa",
+        "EXPO_PUBLIC_API_BASE_URL": "https://api-qa.rhkproperties.com",
+        "EXPO_PUBLIC_SOCKET_URL": "https://api-qa.rhkproperties.com",
+        "EXPO_PUBLIC_WEB_BASE_URL": "https://qa.rhkproperties.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "767292126416-93nm8n5vkqlopem4qa855p816ut1g33a.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "767292126416-1c8kfjlmiagq4c2ndscr6rlsbdn2kdts.apps.googleusercontent.com"
+      }
+    },
+    "production": {
+      "node": "24.15.0",
+      "autoIncrement": true,
+      "environment": "production",
+      "env": {
+        "APP_ENV": "production",
+        "EXPO_PUBLIC_API_BASE_URL": "https://api.rhkproperties.com",
+        "EXPO_PUBLIC_SOCKET_URL": "https://api.rhkproperties.com",
+        "EXPO_PUBLIC_WEB_BASE_URL": "https://rhkproperties.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "767292126416-93nm8n5vkqlopem4qa855p816ut1g33a.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "767292126416-1c8kfjlmiagq4c2ndscr6rlsbdn2kdts.apps.googleusercontent.com",
+        "EXPO_PUBLIC_DASHBOARD_ROLE_IDS": "62df358f-ba81-49f4-9fe1-23d8ffd7cacb"
+      }
+    },
+    "production-qa": {
+      "node": "24.15.0",
+      "autoIncrement": true,
+      "env": {
+        "APP_ENV": "qa",
+        "EXPO_PUBLIC_API_BASE_URL": "https://api-qa.rhkproperties.com",
+        "EXPO_PUBLIC_SOCKET_URL": "https://api-qa.rhkproperties.com",
+        "EXPO_PUBLIC_WEB_BASE_URL": "https://qa.rhkproperties.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "767292126416-93nm8n5vkqlopem4qa855p816ut1g33a.apps.googleusercontent.com",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "767292126416-1c8kfjlmiagq4c2ndscr6rlsbdn2kdts.apps.googleusercontent.com"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "ascAppId": "6776589860",
+        "appleTeamId": "UFYQ4RL447"
+      }
+    },
+    "production-qa": {
+      "ios": {
+        "ascAppId": "6786219046",
+        "appleTeamId": "UFYQ4RL447"
+      }
+    }
+  }
+}

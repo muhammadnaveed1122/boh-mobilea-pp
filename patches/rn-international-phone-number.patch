@@ -1,0 +1,20 @@
+diff --git a/lib/utils/getStyles.js b/lib/utils/getStyles.js
+index 6cde3495023c3756ff10683ee50407a9c13337bb..95929ab1c47ee637ed80b916c533a8624089e34a 100644
+--- a/lib/utils/getStyles.js
++++ b/lib/utils/getStyles.js
+@@ -19,10 +19,13 @@ export function getContainerStyle(theme, containerStyle, disabled) {
+   ];
+ }
+ 
+-export function getFlagContainerStyle(theme, flagContainerStyle) {
++export function getFlagContainerStyle(theme, ...flagContainerStyles) {
++  // Upstream index.js calls this with (theme, rtlStyle, phoneInputStyles.flagContainer)
++  // but the original signature only read the 2nd arg, silently dropping the
++  // consumer's flagContainer override. Merge every extra style arg, last wins.
+   return [
+     theme === 'dark' ? styles.darkFlagButton : styles.lightFlagButton,
+-    flagContainerStyle ? flagContainerStyle : {},
++    ...flagContainerStyles.map((s) => (s ? s : {})),
+   ];
+ }
+ 

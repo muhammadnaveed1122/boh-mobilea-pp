@@ -1,0 +1,159 @@
+{
+  "expo": {
+    "name": "RHK Properties",
+    "slug": "rhk-properties",
+    "version": "2.1.8",
+    "scheme": "bohmobile",
+    "orientation": "portrait",
+    "icon": "./assets/icons/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/icons/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rhkproperties.mobile",
+      "icon": "./assets/AppIcon.icon",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["otpauth", "maps", "comgooglemaps"],
+        "UIBackgroundModes": ["audio", "voip"],
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocationWhenInUseUsageDescription": "Your location is used to show your position on property maps and find nearby listings."
+      },
+      "appleTeamId": "UFYQ4RL447",
+      "usesAppleSignIn": true,
+      "associatedDomains": ["applinks:rhkproperties.com", "applinks:www.rhkproperties.com"]
+    },
+    "android": {
+      "package": "com.rhkproperties.mobile",
+      "versionCode": 40,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/adaptive-foreground.png",
+        "backgroundImage": "./assets/icons/adaptive-background.png",
+        "monochromeImage": "./assets/icons/adaptive-monochrome.png",
+        "backgroundColor": "#F7F7EF"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "rhkproperties.com",
+              "pathPrefix": "/my-account/manage-leads"
+            },
+            {
+              "scheme": "https",
+              "host": "www.rhkproperties.com",
+              "pathPrefix": "/my-account/manage-leads"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.MANAGE_OWN_CALLS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.WAKE_LOCK",
+        "android.permission.USE_FULL_SCREEN_INTENT"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "$EXPO_PUBLIC_GOOGLE_MAPS_API_KEY"
+        }
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/icons/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-apple-authentication",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID to unlock the app."
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.767292126416-1c8kfjlmiagq4c2ndscr6rlsbdn2kdts"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos so you can update your profile picture."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "BOH uses your location to let you share where you are in a chat."
+        }
+      ],
+      [
+        "@config-plugins/react-native-webrtc",
+        {
+          "cameraPermission": false,
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone for calls."
+        }
+      ],
+      "@react-native-community/datetimepicker",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static",
+            "extraPods": [
+              { "name": "GoogleUtilities", "modular_headers": true },
+              { "name": "RecaptchaInterop", "modular_headers": true }
+            ]
+          },
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#6366f1",
+          "sounds": ["./assets/sounds/incoming_call.wav"]
+        }
+      ],
+      "@react-native-firebase/app",
+      "@react-native-firebase/messaging",
+      "./plugins/withCallKeep",
+      "./plugins/withPermissionsFix",
+      "./plugins/withFirebaseStaticFix",
+      "./plugins/withIosSigningTeam",
+      "./plugins/withIosVoip",
+      "./plugins/withChucker",
+      "./plugins/withAndroidSigning"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9e4196d7-64ad-4223-8522-aa35ff6f0fcf"
+      }
+    },
+    "owner": "rhkdev"
+  }
+}

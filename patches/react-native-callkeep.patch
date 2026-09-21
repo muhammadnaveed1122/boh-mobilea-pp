@@ -1,0 +1,49 @@
+diff --git a/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java b/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+index 025480ac97460cc45775ea11aa43af36522d5df6..a8e0396744491fd594d61cc8e2029482910ab439 100644
+--- a/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
++++ b/android/src/main/java/io/wazo/callkeep/RNCallKeepModule.java
+@@ -434,7 +434,10 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         this.hasListeners = false;
+     }
+ 
+-    @ReactMethod
++    // NOTE: @ReactMethod removed from this 3-arg overload. New Architecture
++    // (TurboModule interop) rejects a native module exporting two JS methods
++    // with the same name ("displayIncomingCall"). JS only ever calls the 4-arg
++    // form on Android (index.js), so this convenience overload stays internal.
+     public void displayIncomingCall(String uuid, String number, String callerName) {
+         this.displayIncomingCall(uuid, number, callerName, false, null);
+     }
+@@ -483,7 +486,8 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule implements Life
+         conn.onAnswer();
+     }
+ 
+-    @ReactMethod
++    // NOTE: @ReactMethod removed — duplicate JS method name "startCall" breaks
++    // New Architecture TurboModule interop. JS calls the 4-arg form on Android.
+     public void startCall(String uuid, String number, String callerName) {
+         this.startCall(uuid, number, callerName, false, null);
+     }
+diff --git a/ios/RNCallKeep/RNCallKeep.m b/ios/RNCallKeep/RNCallKeep.m
+index 786045fea8f667bd112f90050c8018c96cde6a3b..0883cea3ff3c5740745b72616ad455649c03b341 100644
+--- a/ios/RNCallKeep/RNCallKeep.m
++++ b/ios/RNCallKeep/RNCallKeep.m
+@@ -935,10 +935,16 @@ - (void)configureAudioSession
+ 
+     [audioSession setMode:mode error:nil];
+ 
+-    double sampleRate = 44100.0;
++    // PATCHED (boh-mobile): 44100 → 48000. react-native-webrtc's voice engine
++    // runs at 48 kHz; a 44.1 kHz preferred rate on the CallKit-configured
++    // session distorts playback on the device (uplink unaffected).
++    double sampleRate = 48000.0;
+     [audioSession setPreferredSampleRate:sampleRate error:nil];
+ 
+-    NSTimeInterval bufferDuration = .005;
++    // PATCHED (boh-mobile): .005 → .02. A 5 ms IO buffer makes the VPIO audio
++    // unit miss render deadlines (playback underruns → "cutting" audio) while
++    // capture stays clean. 20 ms matches WebRTC's frame cadence.
++    NSTimeInterval bufferDuration = .02;
+     [audioSession setPreferredIOBufferDuration:bufferDuration error:nil];
+     [audioSession setActive:TRUE error:nil];
+ }

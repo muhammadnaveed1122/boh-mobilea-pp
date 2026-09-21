@@ -1,0 +1,130 @@
+# Standard PR gate — identical in every RHK-Properties repository.
+#
+# The job name below ("pr-checks") is the exact string required by each repo's
+# branch ruleset. DO NOT RENAME IT. Renaming silently breaks the ruleset: the
+# required check never reports and the repository blocks with no explanation.
+#
+# Auto-detects npm / pnpm / yarn and skips steps a repo genuinely cannot run,
+# so one identical file works across all repos. Owner: Kashif.
+
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+    branches: [main, master, qa, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: pr-checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR title must reference a ticket
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if echo "$PR_TITLE" | grep -qE '\b(RHKP|MDS|OMC)-[0-9]+\b'; then
+            echo "OK — ticket key found in: $PR_TITLE"
+          else
+            echo "::error::PR title must contain a ticket key, e.g. RHKP-1234 (also MDS- / OMC-)."
+            echo "Current title: $PR_TITLE"
+            echo "Edit the PR title and this check re-runs automatically — no new commit needed."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Detect package manager
+        id: pm
+        run: |
+          if [ ! -f package.json ]; then echo "pm=none" >> "$GITHUB_OUTPUT"
+          elif [ -f pnpm-lock.yaml ]; then echo "pm=pnpm" >> "$GITHUB_OUTPUT"
+          elif [ -f yarn.lock ]; then echo "pm=yarn" >> "$GITHUB_OUTPUT"
+          else echo "pm=npm" >> "$GITHUB_OUTPUT"; fi
+
+      - uses: actions/setup-node@v4
+        if: steps.pm.outputs.pm != 'none'
+        with:
+          node-version: 22
+
+      # corepack reads the "packageManager" field from package.json, so it picks
+      # the exact pnpm/yarn version each repo pins. Do not hardcode a version
+      # here - that clashes with packageManager and fails the run.
+      - name: Enable corepack
+        if: ${{ steps.pm.outputs.pm == 'pnpm' || steps.pm.outputs.pm == 'yarn' }}
+        run: |
+          corepack enable
+          if ! node -e "process.exit(require('./package.json').packageManager ? 0 : 1)"; then
+            echo "::warning::No packageManager field in package.json - defaulting to pnpm@9."
+            corepack prepare pnpm@9 --activate
+          fi
+
+      - name: Install dependencies
+        if: steps.pm.outputs.pm != 'none'
+        env:
+          PM: ${{ steps.pm.outputs.pm }}
+        run: |
+          case "$PM" in
+            pnpm) pnpm install --frozen-lockfile || {
+                    echo "::warning::pnpm-lock.yaml is out of date with package.json - installing unfrozen. Refresh the lockfile (RHKP-1222)."
+                    pnpm install --no-frozen-lockfile ; } ;;
+            yarn) yarn install --frozen-lockfile || {
+                    echo "::warning::yarn.lock is out of date - installing unfrozen."
+                    yarn install ; } ;;
+            npm)  npm ci || {
+                    echo "::warning::package-lock.json is out of date - falling back to npm install."
+                    npm install ; } ;;
+          esac
+
+      # Prisma's client is CODE-GENERATED from schema.prisma into node_modules;
+      # it is not in the lockfile and installing dependencies does not create it.
+      # Without it every `prisma.<model>` resolves to TypeScript's `error` type,
+      # which cascades into thousands of bogus no-unsafe-* warnings AND real
+      # false-positive errors (methods whose only `await` is a Prisma call get
+      # flagged by require-await). The Dockerfile already does this at build
+      # time; CI has to as well, or lint and typecheck are checking a fiction.
+      # Skipped automatically in repos with no Prisma schema.
+      - name: Generate Prisma client
+        if: ${{ !cancelled() && steps.pm.outputs.pm != 'none' && hashFiles('**/prisma/schema.prisma') != '' }}
+        run: |
+          echo "Prisma schema found - generating client so lint/typecheck see real model types."
+          npx --yes prisma generate
+
+      - name: Lint
+        if: ${{ !cancelled() && steps.pm.outputs.pm != 'none' }}
+        env:
+          PM: ${{ steps.pm.outputs.pm }}
+        run: |
+          if node -e "process.exit(require('./package.json').scripts?.lint ? 0 : 1)"; then
+            "$PM" run lint
+          else
+            echo "::warning::No lint script in package.json — skipped. Add one (RHKP-1222)."
+          fi
+
+      - name: Typecheck
+        if: ${{ !cancelled() && steps.pm.outputs.pm != 'none' }}
+        env:
+          PM: ${{ steps.pm.outputs.pm }}
+        run: |
+          S=$(node -e "const s=require('./package.json').scripts||{}; console.log(s.typecheck?'typecheck':(s['type-check']?'type-check':''))")
+          if [ -n "$S" ]; then
+            "$PM" run "$S"
+          else
+            echo "::warning::No typecheck script — skipped. Add \"typecheck\": \"tsc --noEmit\" (RHKP-1222)."
+          fi
+
+      - name: Semgrep (secrets + security)
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -f .semgrep.yml ]; then CFG="--config=.semgrep.yml"; else CFG="--config=p/secrets"; fi
+          docker run --rm -v "$PWD:/src" -w /src semgrep/semgrep:latest \
+            semgrep $CFG --severity=ERROR --error --quiet --skip-unknown-extensions .

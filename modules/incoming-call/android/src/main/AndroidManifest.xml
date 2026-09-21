@@ -1,0 +1,22 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <application>
+    <!-- Decline button target. Not exported: only this app's PendingIntents fire it. -->
+    <receiver
+      android:name="expo.modules.incomingcall.IncomingCallActionReceiver"
+      android:exported="false" />
+
+    <!-- Cold-start native ring. FCM delivers a data message to the single
+         highest-priority MESSAGING_EVENT service; priority="1" beats RNFirebase's
+         default-priority (0) no-op service so this one receives it and rings
+         natively without booting JS. RNFirebase still boots its headless JS via
+         its OWN c2dm receiver (separate delivery path) for the SIP INVITE. -->
+    <service
+      android:name="expo.modules.incomingcall.IncomingCallFirebaseMessagingService"
+      android:exported="false"
+      android:directBootAware="false">
+      <intent-filter android:priority="1">
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+  </application>
+</manifest>

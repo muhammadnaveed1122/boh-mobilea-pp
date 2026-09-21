@@ -1,0 +1,9 @@
+# Every change requires review from the QA team before it can reach main.
+#
+# Paired with the branch ruleset: main requires 2 approvals, at least one of
+# which must come from @RHK-Properties/qa. The qa branch requires 1 approval
+# from any reviewer, so code can reach the QA environment to be tested.
+#
+# Rolled out 2026-08-22. Owner: Kashif.
+
+* @RHK-Properties/qa

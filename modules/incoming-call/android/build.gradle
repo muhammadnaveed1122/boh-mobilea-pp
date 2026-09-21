@@ -1,0 +1,26 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'expo.modules.incomingcall'
+version = '1.0.0'
+
+android {
+  namespace "expo.modules.incomingcall"
+  defaultConfig {
+    versionCode 1
+    versionName '1.0.0'
+  }
+}
+
+dependencies {
+  // NotificationCompat.CallStyle needs androidx.core >= 1.10.
+  implementation "androidx.core:core-ktx:1.13.1"
+
+  // FirebaseMessagingService / RemoteMessage for the cold-start native ring.
+  // compileOnly: the runtime lib is supplied by @react-native-firebase/messaging
+  // (firebase-bom) at the app level — we only need the API to compile against,
+  // and must NOT pull a second, possibly-mismatched firebase-messaging in.
+  compileOnly "com.google.firebase:firebase-messaging:24.1.1"
+}
